@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -35,6 +36,18 @@ public class CustomersApiMongoConfiguration {
 	MongoTemplate mongoTemplateCustomers() {
 		MongoClient mongoClient = MongoClients.create(dbCustomersUri);
 		return new MongoTemplate(mongoClient, dbCustomersDatabase);
+	}
+
+	@Configuration
+	@EnableMongoRepositories(basePackages = "com.github.labcabrera.hodei.customers.api.repository.commons", mongoTemplateRef = "mongoTemplateCommons")
+	public class CommonsRepositories {
+
+	}
+
+	@Configuration
+	@EnableMongoRepositories(basePackages = "com.github.labcabrera.hodei.customers.api.repository.customers", mongoTemplateRef = "mongoTemplateCustomers")
+	public class CustomersRepositories {
+
 	}
 
 }

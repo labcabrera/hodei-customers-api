@@ -1,4 +1,4 @@
-package com.github.labcabrera.hodei.customers.api.services;
+package com.github.labcabrera.hodei.customers.api.service;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +26,9 @@ public class CustomerCreationService {
 	@Autowired
 	private EntityAuthorizationResolver entityAuthorizationResolver;
 
+	@Autowired
+	private NotificationService notificationsService;
+
 	public OperationResult<Customer<?>> create(CustomerCreation request) {
 		Customer<?> customer = customerCreationConverter.convert(request);
 		customer.setState("created");
@@ -34,6 +37,9 @@ public class CustomerCreationService {
 			.build());
 		entityAuthorizationResolver.accept(customer, SecurityContextHolder.getContext().getAuthentication());
 		customerRepository.save(customer);
+
+		notificationsService.customerCreation(customer);
+
 		return OperationResult.<Customer<?>>builder()
 			.code("201")
 			.timestamp(LocalDateTime.now())

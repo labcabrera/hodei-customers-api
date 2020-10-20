@@ -1,11 +1,20 @@
+
 spring:
   application:
     name: hodei-customers-api
+    
+  cloud:
+    stream:
+      bindings:
+        sendNotification:
+          destination: hodei-notifications
+
+  jackson:
+    default-property-inclusion: non_null
 
 logging:
   level:
     root: info
-    io.swagger.v3.oas: trace
     com.github.labcabrera: trace
 
 management:
@@ -18,6 +27,7 @@ management:
       show-details: always
 
 app:
+  demo: true
   mongodb:
     commons:
       uri: mongodb://cnp-mongo

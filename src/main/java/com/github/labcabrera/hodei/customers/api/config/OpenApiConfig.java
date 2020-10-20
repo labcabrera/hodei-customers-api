@@ -1,10 +1,19 @@
 package com.github.labcabrera.hodei.customers.api.config;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.github.labcabrera.hodei.jwt.JwtConstants;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -14,15 +23,22 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 @Configuration
 public class OpenApiConfig {
 
+	@Value("${app.security.jwt.secret}")
+	private String jwtSecret;
+
+	@Value("${app.demo:false}")
+	private Boolean demo;
+
 	@Bean
 	public OpenAPI customOpenAPI() {
 		StringBuilder description = new StringBuilder();
 		description.append("<p>Customers API</p>");
-		description.append("<p>Demo token:</p>");
-		description.append("<pre>");
-		description.append(
-			"Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MDMyMjA4OTcsImV4cCI6NDc1ODg5NDQ5NywiaXNzIjoiaG9kZWkiLCJzdWIiOiJyb290IiwiYXBwUm9sZXMiOlsiaG9kZWktc2FtcGxlLWNsaWVudCxyb2xlLWN1c3RvbWVyLWNyZWF0aW9uLHJvbGUtZXh0ZW5kZWQtbW9kZWwiXX0.5ncF0hXbiQsXSgGBB1CXvgo4KeyRsqBBShDBR77r_fTmDWp2mdcVv_qHzBq_-vTRkylqVWhBC27T4SvO6j639g");
-		description.append("</pre>");
+		if (demo) {
+			description.append("<p>Demo token:</p>");
+			description.append("<pre>");
+			description.append("Bearer " + createDemoToken());
+			description.append("</pre>");
+		}
 
 		return new OpenAPI()
 			.components(new Components()
@@ -40,4 +56,20 @@ public class OpenApiConfig {
 			.addSecurityItem(
 				new SecurityRequirement().addList("bearer-jwt", Arrays.asList("read", "write")));
 	}
+
+	private String createDemoToken() {
+		String username = "demo";
+		String issuer = "hodei-customers";
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime expirationDate = now.plusYears(1);
+		ZoneId zoneId = ZoneId.systemDefault();
+		List<String> roles = Arrays.asList("demo", "customer-creation", "role-extended-model");
+		return Jwts.builder()
+			.setIssuedAt(Date.from(now.atZone(zoneId).toInstant()))
+			.setExpiration(Date.from(expirationDate.atZone(zoneId).toInstant())).setIssuer(issuer)
+			.setSubject(username).claim(JwtConstants.KEY_CLAIM_ROLES, roles)
+			.signWith(SignatureAlgorithm.HS512, jwtSecret)
+			.compact();
+	}
+
 }

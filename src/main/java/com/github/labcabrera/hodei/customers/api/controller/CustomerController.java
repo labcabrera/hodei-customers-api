@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.labcabrera.hodei.customers.api.dto.CustomerCreation;
 import com.github.labcabrera.hodei.customers.api.dto.CustomerModification;
 import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerRepository;
-import com.github.labcabrera.hodei.customers.api.services.CustomerCreationService;
+import com.github.labcabrera.hodei.customers.api.service.CustomerCreationService;
 import com.github.labcabrera.hodei.model.commons.actions.OperationResult;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
 import com.github.labcabrera.hodei.rsql.service.RsqlService;

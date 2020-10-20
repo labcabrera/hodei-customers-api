@@ -32,10 +32,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
 	
 	implementation 'org.springdoc:springdoc-openapi-ui:1.4.8'
 	implementation 'org.springdoc:springdoc-openapi-data-rest:1.4.8'
-	//implementation 'org.springdoc:springdoc-openapi-security:1.4.8'
 	
 	implementation 'com.github.labcabrera:hodei-model-commons:1.0.0-SNAPSHOT'
 	implementation 'com.github.labcabrera:hodei-starter-jwt:1.0.0-SNAPSHOT'

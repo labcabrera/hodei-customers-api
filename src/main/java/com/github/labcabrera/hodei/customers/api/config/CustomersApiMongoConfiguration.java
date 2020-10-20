@@ -33,8 +33,8 @@ public class CustomersApiMongoConfiguration {
 	@Bean
 	@Primary
 	MongoTemplate mongoTemplateCustomers() {
-		MongoClient mongoClient = MongoClients.create(dbCommonsUri);
-		return new MongoTemplate(mongoClient, dbCommonsDatabase);
+		MongoClient mongoClient = MongoClients.create(dbCustomersUri);
+		return new MongoTemplate(mongoClient, dbCustomersDatabase);
 	}
 
 }

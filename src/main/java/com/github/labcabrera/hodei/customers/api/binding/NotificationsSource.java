@@ -1,4 +1,4 @@
-package com.github.labcabrera.hodei.customers.api.config;
+package com.github.labcabrera.hodei.customers.api.binding;
 
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;

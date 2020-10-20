@@ -6,7 +6,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
-import com.github.labcabrera.hodei.customers.api.config.NotificationsSource;
+import com.github.labcabrera.hodei.customers.api.binding.NotificationsSource;
 import com.github.labcabrera.hodei.customers.api.dto.NotificationRequest;
 import com.github.labcabrera.hodei.customers.api.dto.NotificationType;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;

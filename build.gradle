@@ -1,0 +1,73 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.4.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id 'com.palantir.docker' version '0.25.0'
+	id 'java'
+}
+
+group = 'org.github.labcabrera'
+version = version
+sourceCompatibility = '11'
+
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+}
+
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+ext {
+	set('springCloudVersion', "Hoxton.SR8")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
+	
+	compileOnly 'org.springdoc:springdoc-openapi-ui:1.4.8'
+
+	/*
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
+	*/
+	
+	implementation 'com.github.labcabrera:hodei-model-commons:1.0.0-SNAPSHOT'
+	implementation 'com.github.labcabrera:hodei-starter-jwt:1.0.0-SNAPSHOT'
+	implementation 'com.github.labcabrera:hodei-starter-rsql:1.0.0-SNAPSHOT'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
+	testImplementation 'org.springframework.cloud:spring-cloud-stream-binder-test'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
+
+docker {
+	name "labcabrera/${jar.baseName}"
+	tags 'latest'
+	dockerfile file('Docker/Dockerfile')
+	files jar.archivePath
+	buildArgs(['JAR_FILE': "${jar.archiveName}"])
+}

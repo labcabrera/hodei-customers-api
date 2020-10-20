@@ -1,0 +1,121 @@
+= Hodei notifications module
+
+Ejemplo de uso de Spring Cloud Stream con el binder de RabbitMQ para consumir una cola de notificaciones.
+
+Dependiendo de la configuración se enviarán por correo y telegram los mensajes recibidos.
+
+Para hacer una prueba simplemente publicar un mensaje directamente en Rabbit.
+
+----
+{
+	"type":"notification",
+	"module":"customers",
+	"operation": "customer-creation",
+	"subject": "Customer 343Z created",
+	"body": "Lorem ipsum"
+}
+----
+
+O un mensaje de error:
+
+----
+{
+	"type":"error",
+	"module":"policies",
+	"operation": "policy-creation",
+	"subject": "Policy 234X creation error",
+	"body": "Lorem ipsum"
+}
+----
+
+== Spring Cloud Stream
+
+En nuestro caso la aplicación simplemente leerá de una cola los mensajes. Para realizar el binding simplemente tendremos que definir
+el bean:
+
+----
+@Configuration
+public class BindingConfig {
+
+	@Bean
+	public Consumer<NotificationRequest> processNotification(NotificationService service) {
+		return service::processNotification;
+	}
+
+}
+----
+
+Después, simplemente en nuestra configuración estableceremos los valores:
+
+----
+spring:
+  cloud:
+    stream:
+      function:
+        definition: processNotification
+      bindings:
+        processNotification-in-0:
+          destination: hodei-notifications
+          group: process
+          consumer:
+            max-attempts: 3
+            back-off-initial-interval: 1000
+            retryable-exceptions:
+              javax:
+                validation:
+                  ConstraintViolationException: false
+----
+
+En este caso debe coincidir el nombre de nuestro bean con el valor `{name}-in-0`.
+
+Esta configuración generará el exchange `hodei-notifications` conectado a la cola `hodei-notifications.process` con
+la routing key `#` (todos los mensajes se enrutan a la dicha cola).
+
+Para ejecutar la aplicación deberemos tener las siguientes variables de entorno:
+
+----
+TELEGRAM_TOKEN=*****
+MAIL_HOST=*****
+MAIL_USERNAME=*****
+MAIL_PASSWORD=*****
+----
+
+Docker
+
+
+----
+./gradlew clean build docker -x test
+
+
+docker run -d \
+  --name hodei-notifications \
+  --network cnp-shared \
+  -h hodei-notifications \
+  -e MAIL_HOST=${MAIL_HOST} \
+  -e MAIL_USERNAME=${MAIL_USERNAME} \
+  -e MAIL_PASSWORD=${MAIL_PASSWORD} \
+  -e TELEGRAM_TOKEN=${TELEGRAM_TOKEN} \
+  -e JAVA_OPTS="-Xmx256M -Xms128M" \
+  labcabrera/hodei-notifications:latest
+----
+
+Nota: en este caso se utiliza el network cnp-shared donde deben estar corriendo mongo (hostname cnp-mongo) y rabbit (cnp-rabbit).
+
+En el caso de no utilizar un network especifico habria que eliminar la opción `--network cnp-shared`
+
+
+== Features
+
+- Spring Cloud Stream
+- RabbitMQ
+- Mongo
+- Actuator
+- Cache
+- Validation
+
+== Resources
+
+- https://cloud.spring.io/spring-cloud-static/spring-cloud-stream/current/reference/html/spring-cloud-stream.html
+- https://github.com/spring-cloud/spring-cloud-stream-samples
+- https://developer.okta.com/blog/2020/04/15/spring-cloud-stream
+

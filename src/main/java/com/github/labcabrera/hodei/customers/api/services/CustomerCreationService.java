@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.github.labcabrera.hodei.customers.api.dto.CustomerCreation;
 import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerRepository;
 import com.github.labcabrera.hodei.customers.api.security.EntityAuthorizationResolver;
+import com.github.labcabrera.hodei.model.commons.actions.OperationResult;
 import com.github.labcabrera.hodei.model.commons.audit.EntityMetadata;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
 
@@ -25,7 +26,7 @@ public class CustomerCreationService {
 	@Autowired
 	private EntityAuthorizationResolver entityAuthorizationResolver;
 
-	public Customer<?> create(CustomerCreation request) {
+	public OperationResult<Customer<?>> create(CustomerCreation request) {
 		Customer<?> customer = customerCreationConverter.convert(request);
 		customer.setState("created");
 		customer.setMetadata(EntityMetadata.builder()
@@ -33,6 +34,11 @@ public class CustomerCreationService {
 			.build());
 		entityAuthorizationResolver.accept(customer, SecurityContextHolder.getContext().getAuthentication());
 		customerRepository.save(customer);
-		return customer;
+		return OperationResult.<Customer<?>>builder()
+			.code("201")
+			.timestamp(LocalDateTime.now())
+			.message("Customer created")
+			.payload(customer)
+			.build();
 	}
 }

@@ -35,7 +35,7 @@ dependencies {
 	
 	implementation 'org.springdoc:springdoc-openapi-ui:1.4.8'
 	implementation 'org.springdoc:springdoc-openapi-data-rest:1.4.8'
-	implementation 'org.springdoc:springdoc-openapi-security:1.4.8'
+	//implementation 'org.springdoc:springdoc-openapi-security:1.4.8'
 	
 	implementation 'com.github.labcabrera:hodei-model-commons:1.0.0-SNAPSHOT'
 	implementation 'com.github.labcabrera:hodei-starter-jwt:1.0.0-SNAPSHOT'

@@ -2,16 +2,11 @@ spring:
   application:
     name: hodei-notifications
 
-#  data:
-#    mongodb:
-#      database: hodei-customers
-#      port: 27017
-#      host: cnp-mongo
-
 logging:
   level:
     root: info
-    com.github.labcabrera: debug
+    io.swagger.v3.oas: trace
+    com.github.labcabrera: trace
 
 app:
   mongodb:
@@ -24,7 +19,7 @@ app:
       
   security:
     jwt:
-      secret: ${APP_JWT_SECRET:8a0b38d72d6e5ac41d606aa2c0d90c39}
+      secret: ${APP_JWT_SECRET:changeit}
       expiration: 18000
       alternate-header: X-Authorization
     authentication:

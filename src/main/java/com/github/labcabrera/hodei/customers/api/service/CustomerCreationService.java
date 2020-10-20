@@ -21,7 +21,7 @@ public class CustomerCreationService {
 	private CustomerRepository customerRepository;
 
 	@Autowired
-	private Converter<CustomerCreation, Customer<?>> customerCreationConverter;
+	private Converter<CustomerCreation, Customer> customerCreationConverter;
 
 	@Autowired
 	private EntityAuthorizationResolver entityAuthorizationResolver;
@@ -29,8 +29,8 @@ public class CustomerCreationService {
 	@Autowired
 	private NotificationService notificationsService;
 
-	public OperationResult<Customer<?>> create(CustomerCreation request) {
-		Customer<?> customer = customerCreationConverter.convert(request);
+	public OperationResult<Customer> create(CustomerCreation request) {
+		Customer customer = customerCreationConverter.convert(request);
 		customer.setState("created");
 		customer.setMetadata(EntityMetadata.builder()
 			.created(LocalDateTime.now())
@@ -40,7 +40,7 @@ public class CustomerCreationService {
 
 		notificationsService.customerCreation(customer);
 
-		return OperationResult.<Customer<?>>builder()
+		return OperationResult.<Customer>builder()
 			.code("201")
 			.timestamp(LocalDateTime.now())
 			.message("Customer created")

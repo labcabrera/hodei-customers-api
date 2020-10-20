@@ -6,8 +6,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
 
-public interface CustomerRepository extends MongoRepository<Customer<?>, String> {
+public interface CustomerRepository extends MongoRepository<Customer, String> {
 
-	Optional<Customer<?>> findByIdCardNumber(String idCardNumber);
+	Optional<Customer> findByIdCardNumber(String idCardNumber);
 
 }

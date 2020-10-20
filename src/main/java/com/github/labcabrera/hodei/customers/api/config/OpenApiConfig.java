@@ -63,7 +63,7 @@ public class OpenApiConfig {
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime expirationDate = now.plusYears(1);
 		ZoneId zoneId = ZoneId.systemDefault();
-		List<String> roles = Arrays.asList("demo", "customer-creation", "role-extended-model");
+		List<String> roles = Arrays.asList("demo", "role-extended-model", "role-customer-creation", "role-customer-modification");
 		return Jwts.builder()
 			.setIssuedAt(Date.from(now.atZone(zoneId).toInstant()))
 			.setExpiration(Date.from(expirationDate.atZone(zoneId).toInstant())).setIssuer(issuer)

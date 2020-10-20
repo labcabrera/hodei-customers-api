@@ -18,7 +18,7 @@ public class NotificationService {
 	@Autowired
 	private NotificationsSource notificationsSource;
 
-	public void customerCreation(Customer<?> customer) {
+	public void customerCreation(Customer customer) {
 		StringBuilder subject = new StringBuilder("Created person ");
 		subject.append(customer.getName()).append(" ").append(customer.getSurname1());
 		if (StringUtils.isNotBlank(customer.getSurname2())) {

@@ -8,8 +8,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
-import org.springframework.data.annotation.Id;
-
 import com.github.labcabrera.hodei.model.commons.ContactData;
 import com.github.labcabrera.hodei.model.commons.customer.CivilStatus;
 import com.github.labcabrera.hodei.model.commons.customer.CustomerProfessionInfo;
@@ -30,14 +28,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CustomerCreation {
 
-	@Id
-	@Schema(description = "Person identifier", required = true, example = "1")
-	protected String id;
-
 	@Valid
 	@NotNull(message = "{validation.constraints.abstract-entity.required-id-card}")
 	@Schema(description = "Indicates the identification document", required = true)
-	protected IdCard idCard;
+	private IdCard idCard;
 
 	@NotBlank(message = "{validation.constraints.person.expected-name}")
 	@Schema(description = "Name", required = true, example = "John")
@@ -79,10 +73,10 @@ public class CustomerCreation {
 	@Valid
 	@NotNull(message = "{validation.constraints.abstract-entity.required-contact-data}")
 	@Schema(description = "Contact data. Phones, fax, emails and websites", required = true)
-	protected ContactData contactData;
+	private ContactData contactData;
 
 	@Valid
 	@Schema(description = "Profession information")
-	protected CustomerProfessionInfo professionInfo;
+	private CustomerProfessionInfo professionInfo;
 
 }

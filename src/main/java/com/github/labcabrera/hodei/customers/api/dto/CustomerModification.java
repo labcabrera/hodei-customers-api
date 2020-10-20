@@ -6,8 +6,6 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Past;
 
-import org.springframework.data.annotation.Id;
-
 import com.github.labcabrera.hodei.model.commons.ContactData;
 import com.github.labcabrera.hodei.model.commons.customer.CivilStatus;
 import com.github.labcabrera.hodei.model.commons.customer.CustomerProfessionInfo;
@@ -28,29 +26,25 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CustomerModification {
 
-	@Id
-	@Schema(description = "Person identifier", required = true, example = "1")
-	protected String id;
-
 	@Valid
-	@Schema(description = "Indicates the identification document", required = true)
-	protected IdCard idCard;
+	@Schema(description = "Indicates the identification document")
+	private IdCard idCard;
 
-	@Schema(description = "Name", required = true, example = "John")
+	@Schema(description = "Name", example = "John")
 	private String name;
 
-	@Schema(description = "First surname", required = true, example = "Doe")
+	@Schema(description = "First surname", example = "Doe")
 	private String surname1;
 
-	@Schema(description = "Second surname", required = false, example = "Smith")
+	@Schema(description = "Second surname", example = "Smith")
 	private String surname2;
 
 	@Past
-	@Schema(description = "Birth date", required = true, example = "1977-11-03")
+	@Schema(description = "Birth date", example = "1977-11-03")
 	private LocalDate birth;
 
 	@ExistingCountry
-	@Schema(description = "Birth country for this persons", required = true, example = "ESP")
+	@Schema(description = "Birth country for this persons", example = "ESP")
 	private String birthCountryId;
 
 	@ExistingCountry
@@ -58,21 +52,21 @@ public class CustomerModification {
 	private List<String> nationalities;
 
 	@Valid
-	@Schema(description = "Fiscal address for this person. It is unique accross the policies", required = true)
+	@Schema(description = "Fiscal address for this person. It is unique accross the policies")
 	private Address fiscalAddress;
 
-	@Schema(description = "Civil status", required = false, example = "single")
+	@Schema(description = "Civil status", example = "single")
 	private CivilStatus civilStatus;
 
-	@Schema(description = "Gender", required = true, example = "male")
+	@Schema(description = "Gender", example = "male")
 	private Gender gender;
 
 	@Valid
-	@Schema(description = "Contact data. Phones, fax, emails and websites", required = true)
-	protected ContactData contactData;
+	@Schema(description = "Contact data. Phones, fax, emails and websites")
+	private ContactData contactData;
 
 	@Valid
 	@Schema(description = "Profession information")
-	protected CustomerProfessionInfo professionInfo;
+	private CustomerProfessionInfo professionInfo;
 
 }

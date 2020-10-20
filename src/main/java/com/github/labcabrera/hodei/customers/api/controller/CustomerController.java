@@ -26,8 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.labcabrera.hodei.customers.api.dto.CustomerCreation;
 import com.github.labcabrera.hodei.customers.api.dto.CustomerModification;
+import com.github.labcabrera.hodei.customers.api.dto.CustomerModificationResult;
 import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerRepository;
 import com.github.labcabrera.hodei.customers.api.service.CustomerCreationService;
+import com.github.labcabrera.hodei.customers.api.service.customer.modification.CustomerModificationService;
 import com.github.labcabrera.hodei.model.commons.actions.OperationResult;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
 import com.github.labcabrera.hodei.rsql.service.RsqlService;
@@ -50,22 +52,24 @@ public class CustomerController {
 	private CustomerCreationService creationService;
 
 	@Autowired
+	private CustomerModificationService modificationService;
+
+	@Autowired
 	private RsqlService rsqlService;
 
 	@Autowired
 	@Qualifier("mongoTemplateCustomers")
 	private MongoTemplate mongoTemplate;
 
-	@GetMapping("/id")
+	@GetMapping("/{id}")
 	@Operation(summary = "Customer search by id")
-	public ResponseEntity<Customer<?>> findById(String customerId) {
+	public ResponseEntity<Customer> findById(@PathVariable("id") String customerId) {
 		log.debug("Find customer {}", customerId);
-		Optional<Customer<?>> optional = customerRepository.findById(customerId);
+		Optional<Customer> optional = customerRepository.findById(customerId);
 		return ResponseEntity.of(optional);
 	}
 
 	@GetMapping
-	@SuppressWarnings("rawtypes")
 	@Operation(summary = "Customer search by rsql")
 	public ResponseEntity<Page<Customer>> find(
 		@Parameter(example = "", required = false) @RequestParam(defaultValue = "") String rsql,
@@ -79,15 +83,16 @@ public class CustomerController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@Operation(summary = "Customer creation")
-	public OperationResult<Customer<?>> createCustomer(@RequestBody @Valid CustomerCreation request) {
+	public OperationResult<Customer> createCustomer(@RequestBody @Valid CustomerCreation request) {
 		log.debug("Received customer creation request {}", request);
 		return creationService.create(request);
 	}
 
-	@PatchMapping("/id")
+	@PatchMapping("/{id}")
 	@Operation(summary = "Customer modification")
-	public Customer<?> createCustomer(@PathVariable("id") String customerId, @RequestBody @Valid CustomerModification request) {
-		throw new RuntimeException("Not implemented");
+	public CustomerModificationResult createCustomer(@PathVariable("id") String customerId,
+		@RequestBody @Valid CustomerModification request) {
+		return modificationService.update(customerId, request);
 	}
 
 }

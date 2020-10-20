@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.github.labcabrera.hodei.customers.api.dto.CustomerCreation;
 import com.github.labcabrera.hodei.customers.api.dto.CustomerModification;
@@ -36,6 +37,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
+@RestController
 @RequestMapping(value = "/customers", produces = "application/json")
 @Tag(name = "Customers", description = "Customer operations")
 @Slf4j
@@ -83,7 +85,7 @@ public class CustomerController {
 	}
 
 	@PatchMapping("/id")
-	@Operation(summary = "Customer creation")
+	@Operation(summary = "Customer modification")
 	public Customer<?> createCustomer(@PathVariable("id") String customerId, @RequestBody @Valid CustomerModification request) {
 		throw new RuntimeException("Not implemented");
 	}

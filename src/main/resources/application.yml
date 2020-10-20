@@ -1,12 +1,21 @@
 spring:
   application:
-    name: hodei-notifications
+    name: hodei-customers-api
 
 logging:
   level:
     root: info
     io.swagger.v3.oas: trace
     com.github.labcabrera: trace
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
 
 app:
   mongodb:

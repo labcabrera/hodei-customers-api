@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.github.labcabrera.hodei.customers.api.repository.customers.ProfessionRepository;
 import com.github.labcabrera.hodei.model.commons.customer.Profession;
@@ -22,6 +23,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
+@RestController
 @RequestMapping(value = "/professions", produces = "application/json")
 @Tag(name = "Professions")
 @Slf4j
@@ -39,9 +41,9 @@ public class ProfessionController {
 
 	@GetMapping("/id")
 	@Operation(summary = "Profesion search by id")
-	public ResponseEntity<Profession> findById(String customerId) {
-		log.debug("Find customer {}", customerId);
-		Optional<Profession> optional = customerRepository.findById(customerId);
+	public ResponseEntity<Profession> findById(String professionId) {
+		log.debug("Find customer {}", professionId);
+		Optional<Profession> optional = customerRepository.findById(professionId);
 		return ResponseEntity.of(optional);
 	}
 

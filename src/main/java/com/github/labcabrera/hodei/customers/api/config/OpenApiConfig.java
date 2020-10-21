@@ -34,9 +34,14 @@ public class OpenApiConfig {
 		StringBuilder description = new StringBuilder();
 		description.append("<p>Customers API</p>");
 		if (demo) {
-			description.append("<p>Demo token:</p>");
+			description.append("<p><h>Demo token user</h></p>");
 			description.append("<pre>");
-			description.append("Bearer " + createDemoToken());
+			description.append(createDemoToken("demo",
+				Arrays.asList("demo", "role-extended-model", "role-customer-creation", "role-customer-modification")));
+			description.append("</pre>");
+			description.append("<p><h>Demo token admin</h></p>");
+			description.append("<pre>");
+			description.append(createDemoToken("demo-admin", Arrays.asList("demo", "role-system-manager", "role-extended-model")));
 			description.append("</pre>");
 		}
 
@@ -57,14 +62,12 @@ public class OpenApiConfig {
 				new SecurityRequirement().addList("bearer-jwt", Arrays.asList("read", "write")));
 	}
 
-	private String createDemoToken() {
-		String username = "demo";
+	private String createDemoToken(String username, List<String> roles) {
 		String issuer = "hodei-customers";
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime expirationDate = now.plusYears(1);
 		ZoneId zoneId = ZoneId.systemDefault();
-		List<String> roles = Arrays.asList("demo", "role-extended-model", "role-customer-creation", "role-customer-modification");
-		return Jwts.builder()
+		return "Bearer " + Jwts.builder()
 			.setIssuedAt(Date.from(now.atZone(zoneId).toInstant()))
 			.setExpiration(Date.from(expirationDate.atZone(zoneId).toInstant())).setIssuer(issuer)
 			.setSubject(username).claim(JwtConstants.KEY_CLAIM_ROLES, roles)

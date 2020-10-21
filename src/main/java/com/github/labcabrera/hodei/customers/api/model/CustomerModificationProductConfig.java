@@ -10,7 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document(collation = "customerModificationProductConfigurations")
+@Document(collection = "customerModificationProductConfigurations")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +21,8 @@ public class CustomerModificationProductConfig {
 	private String id;
 
 	private String module;
+
+	private Boolean active;
 
 	private List<String> ignoredStates;
 

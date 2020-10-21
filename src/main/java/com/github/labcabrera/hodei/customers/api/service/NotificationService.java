@@ -24,7 +24,24 @@ public class NotificationService {
 		if (StringUtils.isNotBlank(customer.getSurname2())) {
 			subject.append(" ").append(customer.getSurname2());
 		}
-		subject.append(". IdCard ").append(customer.getIdCard().getNumber());
+		subject.append(" - ").append(customer.getIdCard().getNumber());
+		subject.append(" (").append(customer.getId()).append(")");
+
+		NotificationRequest notificationrequest = NotificationRequest.builder()
+			.type(NotificationType.NOTIFICATION)
+			.operation("customer-creation")
+			.subject(subject.toString())
+			.build();
+		notificationsSource.sendNotificationChannel().send(MessageBuilder.withPayload(notificationrequest).build());
+	}
+
+	public void customerModification(Customer customer) {
+		StringBuilder subject = new StringBuilder("Updated person ");
+		subject.append(customer.getName()).append(" ").append(customer.getSurname1());
+		if (StringUtils.isNotBlank(customer.getSurname2())) {
+			subject.append(" ").append(customer.getSurname2());
+		}
+		subject.append(" - ").append(customer.getIdCard().getNumber());
 		subject.append(" (").append(customer.getId()).append(")");
 
 		NotificationRequest notificationrequest = NotificationRequest.builder()

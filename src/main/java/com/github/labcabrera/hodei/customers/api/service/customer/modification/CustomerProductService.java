@@ -41,7 +41,7 @@ public class CustomerProductService {
 		customer.getProductReferences().stream().forEach(e -> {
 			String module = e.getModule();
 			String state = e.getPolicyState();
-			configRepository.findByModule(module).ifPresent(config -> {
+			configRepository.findActiveByModule(module).ifPresent(config -> {
 				if (!config.getIgnoredStates().contains(state)) {
 					result.getProductModificationState().put(module, "pending");
 					destinations.add(config.getDestination());
@@ -54,6 +54,7 @@ public class CustomerProductService {
 	}
 
 	private void sendMessage(CustomerModificationResult result, AmqpDestination destination) {
+		log.debug("Sending AMQP customer modification message {}:{}", destination.getExchange(), destination.getRoutingKey());
 		String message = createMessage(result);
 		String exchange = destination.getExchange();
 		String routingKey = destination.getRoutingKey();

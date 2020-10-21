@@ -15,6 +15,7 @@ import com.github.labcabrera.hodei.customers.api.dto.CustomerModificationResult;
 import com.github.labcabrera.hodei.customers.api.dto.CustomerModificationResult.CustomerModificationField;
 import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerRepository;
 import com.github.labcabrera.hodei.customers.api.security.AuthorizationFilter;
+import com.github.labcabrera.hodei.customers.api.service.NotificationService;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
 
 @Service
@@ -32,6 +33,9 @@ public class CustomerModificationService {
 	@Autowired
 	private CustomerProductService customerProductService;
 
+	@Autowired
+	private NotificationService notificationService;
+
 	public CustomerModificationResult update(String customerId, @Valid CustomerModification request) {
 		Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new RuntimeException("Entity not found"));
 		if (!authorizationFilter.test(customer)) {
@@ -45,6 +49,8 @@ public class CustomerModificationService {
 
 		customer.getMetadata().setUpdated(LocalDateTime.now());
 		customerRepository.save(customer);
+
+		notificationService.customerModification(customer);
 
 		CustomerModificationResult result = CustomerModificationResult.builder()
 			.created(LocalDateTime.now())

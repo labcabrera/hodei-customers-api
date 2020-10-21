@@ -10,12 +10,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document(collection = "customerModificationProductConfigurations")
+@Document(collection = "customerProductConfigurations")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CustomerModificationProductConfig {
+public class CustomerProductConfig {
 
 	@Id
 	private String id;
@@ -24,7 +24,9 @@ public class CustomerModificationProductConfig {
 
 	private Boolean active;
 
-	private List<String> ignoredStates;
+	private List<String> ignoredModificationStates;
+
+	private List<String> draftStates;
 
 	private AmqpDestination destination;
 

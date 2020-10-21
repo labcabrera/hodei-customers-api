@@ -8,13 +8,16 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.github.labcabrera.hodei.customers.api.dto.CustomerModification;
-import com.github.labcabrera.hodei.customers.api.dto.CustomerModificationResult;
-import com.github.labcabrera.hodei.customers.api.dto.CustomerModificationResult.CustomerModificationField;
+import com.github.labcabrera.hodei.customers.api.model.CustomerModificationResult;
+import com.github.labcabrera.hodei.customers.api.model.CustomerModificationResult.CustomerModificationField;
+import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerModificationResultRepository;
 import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerRepository;
 import com.github.labcabrera.hodei.customers.api.security.AuthorizationFilter;
+import com.github.labcabrera.hodei.customers.api.security.EntityAuthorizationResolver;
 import com.github.labcabrera.hodei.customers.api.service.NotificationService;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
 
@@ -36,6 +39,12 @@ public class CustomerModificationService {
 	@Autowired
 	private NotificationService notificationService;
 
+	@Autowired
+	private CustomerModificationResultRepository customerModificationResultRepository;
+
+	@Autowired
+	private EntityAuthorizationResolver entityAuthorizationResolver;
+
 	public CustomerModificationResult update(String customerId, @Valid CustomerModification request) {
 		Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new RuntimeException("Entity not found"));
 		if (!authorizationFilter.test(customer)) {
@@ -56,11 +65,16 @@ public class CustomerModificationService {
 			.created(LocalDateTime.now())
 			.state("pending")
 			.payload(customer)
+			.customerId(customerId)
 			.productModificationState(new LinkedHashMap<>())
 			.modifications(list)
 			.build();
 
-		return customerProductService.process(customer, result);
+		customerProductService.process(customer, result);
+
+		entityAuthorizationResolver.accept(result, SecurityContextHolder.getContext().getAuthentication());
+		customerModificationResultRepository.insert(result);
+		return result;
 	}
 
 }

@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.labcabrera.hodei.customers.api.dto.CustomerModificationResult;
-import com.github.labcabrera.hodei.customers.api.model.CustomerModificationProductConfig.AmqpDestination;
-import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerModificationProductConfigRepository;
+import com.github.labcabrera.hodei.customers.api.model.CustomerModificationResult;
+import com.github.labcabrera.hodei.customers.api.model.CustomerProductConfig.AmqpDestination;
+import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerProductConfigRepository;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomerProductService {
 
 	@Autowired
-	private CustomerModificationProductConfigRepository configRepository;
+	private CustomerProductConfigRepository configRepository;
 
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
@@ -29,11 +29,11 @@ public class CustomerProductService {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	public CustomerModificationResult process(Customer customer, CustomerModificationResult result) {
+	public void process(Customer customer, CustomerModificationResult result) {
 		if (customer.getProductReferences() == null || customer.getProductReferences().isEmpty()) {
 			log.debug("Customer has not products");
 			result.setState("completed");
-			return result;
+			return;
 		}
 
 		List<AmqpDestination> destinations = new ArrayList<>();
@@ -42,7 +42,7 @@ public class CustomerProductService {
 			String module = e.getModule();
 			String state = e.getPolicyState();
 			configRepository.findActiveByModule(module).ifPresent(config -> {
-				if (!config.getIgnoredStates().contains(state)) {
+				if (!config.getIgnoredModificationStates().contains(state)) {
 					result.getProductModificationState().put(module, "pending");
 					destinations.add(config.getDestination());
 				}
@@ -50,7 +50,6 @@ public class CustomerProductService {
 		});
 
 		destinations.forEach(e -> sendMessage(result, e));
-		return result;
 	}
 
 	private void sendMessage(CustomerModificationResult result, AmqpDestination destination) {

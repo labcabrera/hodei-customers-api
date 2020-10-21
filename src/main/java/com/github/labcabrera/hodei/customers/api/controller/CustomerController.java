@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,13 +28,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.labcabrera.hodei.customers.api.dto.CustomerCreation;
 import com.github.labcabrera.hodei.customers.api.dto.CustomerModification;
-import com.github.labcabrera.hodei.customers.api.dto.CustomerModificationResult;
+import com.github.labcabrera.hodei.customers.api.model.CustomerModificationResult;
 import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerRepository;
 import com.github.labcabrera.hodei.customers.api.service.customer.creation.CustomerCreationService;
 import com.github.labcabrera.hodei.customers.api.service.customer.deletion.CustomerDeletionService;
 import com.github.labcabrera.hodei.customers.api.service.customer.modification.CustomerModificationService;
 import com.github.labcabrera.hodei.model.commons.actions.OperationResult;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
+import com.github.labcabrera.hodei.model.commons.product.ProductReference;
 import com.github.labcabrera.hodei.rsql.service.RsqlService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -100,9 +102,34 @@ public class CustomerController {
 		return modificationService.update(customerId, request);
 	}
 
+	@PutMapping("/{id}/products")
+	@Operation(summary = "Customer modification")
+	public CustomerModificationResult createCustomer(@PathVariable("id") String customerId,
+		@RequestBody @Valid ProductReference productReference) {
+		return null;
+	}
+
+	@GetMapping("/{id}/modifications/{modificationId}")
+	@Operation(summary = "Customer modification result", description = "Obtains the result of a customer's modification operation when the result of the operation is asynchronous")
+	public CustomerModificationResult findCustomerModificationResult(
+		@PathVariable("id") String customerId,
+		@PathVariable("modificationId") String modificationId) {
+		return null;
+	}
+
+	@GetMapping("/{id}/modifications")
+	@Operation(summary = "Customer modification result")
+	public Page<CustomerModificationResult> findCustomerModificationResult(
+		@PathVariable("id") String customerId,
+		@RequestParam(name = "rsql", defaultValue = "") String rsql,
+		Pageable pageable) {
+		return null;
+	}
+
 	@DeleteMapping("/{id}")
-	@Operation(summary = "Customer elimination")
-	public OperationResult<Customer> deleteCustomer(@PathVariable("id") String customerId) {
+	@Operation(summary = "Customer elimination", description = "Physically eliminates a customer as long as he has no associated products")
+	public OperationResult<Void> deleteCustomer(@PathVariable("id") String customerId) {
+		log.debug("Received customer deletion {}", customerId);
 		return deletionService.delete(customerId);
 	}
 

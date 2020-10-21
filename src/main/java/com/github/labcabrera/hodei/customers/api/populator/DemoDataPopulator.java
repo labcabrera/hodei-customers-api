@@ -9,11 +9,11 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.github.labcabrera.hodei.customers.api.model.CustomerModificationProductConfig;
-import com.github.labcabrera.hodei.customers.api.model.CustomerModificationProductConfig.AmqpDestination;
+import com.github.labcabrera.hodei.customers.api.model.CustomerProductConfig;
+import com.github.labcabrera.hodei.customers.api.model.CustomerProductConfig.AmqpDestination;
 import com.github.labcabrera.hodei.customers.api.repository.commons.CountryRepository;
 import com.github.labcabrera.hodei.customers.api.repository.commons.ProvinceRepository;
-import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerModificationProductConfigRepository;
+import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerProductConfigRepository;
 import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerRepository;
 import com.github.labcabrera.hodei.customers.api.repository.customers.ProfessionRepository;
 import com.github.labcabrera.hodei.model.commons.ContactData;
@@ -48,7 +48,7 @@ public class DemoDataPopulator {
 	private CustomerRepository customerRepository;
 
 	@Autowired
-	private CustomerModificationProductConfigRepository modificationProductConfigRepository;
+	private CustomerProductConfigRepository modificationProductConfigRepository;
 
 	public OperationResult<Void> loadInitialData(boolean reset) {
 		if (reset) {
@@ -77,10 +77,11 @@ public class DemoDataPopulator {
 			professionRepository.insert(Profession.builder().name("Coder").build());
 		}
 		if (modificationProductConfigRepository.count() == 0) {
-			modificationProductConfigRepository.insert(CustomerModificationProductConfig.builder()
+			modificationProductConfigRepository.insert(CustomerProductConfig.builder()
 				.module("demo-product")
 				.active(true)
-				.ignoredStates(Arrays.asList())
+				.ignoredModificationStates(Arrays.asList())
+				.draftStates(Arrays.asList("draft-pending-approbation"))
 				.destination(AmqpDestination.builder()
 					.exchange("demo-product")
 					.routingKey("customer-modification")

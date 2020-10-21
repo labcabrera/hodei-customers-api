@@ -1,20 +1,56 @@
 package com.github.labcabrera.hodei.customers.api.service.customer.deletion;
 
 import java.time.LocalDateTime;
+import java.util.function.Consumer;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerProductConfigRepository;
+import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerRepository;
+import com.github.labcabrera.hodei.customers.api.security.AuthorizationFilter;
 import com.github.labcabrera.hodei.model.commons.actions.OperationResult;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
 
 @Service
 public class CustomerDeletionService {
 
-	public OperationResult<Customer> delete(String id) {
-		return OperationResult.<Customer>builder()
-			.code("501")
+	@Autowired
+	private CustomerRepository customerRepository;
+
+	@Autowired
+	private CustomerProductConfigRepository customerProductConfigRepository;
+
+	@Autowired
+	private AuthorizationFilter authFilter;
+
+	public OperationResult<Void> delete(String id) {
+		customerRepository.findById(id).ifPresentOrElse(e -> delete(), () -> {
+			throw new RuntimeException("Not found");
+		});
+		return OperationResult.<Void>builder()
+			.code("200")
 			.timestamp(LocalDateTime.now())
-			.message("Not implemented")
+			.message("Success")
 			.build();
+	}
+
+	private Consumer<Customer> delete() {
+		return customer -> {
+			if (!authFilter.test(customer)) {
+				throw new AccessDeniedException("Forbiden");
+			}
+			customer.getProductReferences().forEach(reference -> {
+				String module = reference.getModule();
+				customerProductConfigRepository.findByModule(module).ifPresent(config -> {
+					String state = reference.getPolicyState();
+					if (!config.getDraftStates().contains(state)) {
+						throw new RuntimeException("Customer has product references");
+					}
+				});
+			});
+			customerRepository.delete(customer);
+		};
 	}
 }

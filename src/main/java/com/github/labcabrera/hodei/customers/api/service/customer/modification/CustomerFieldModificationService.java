@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.labcabrera.hodei.customers.api.dto.CustomerModification;
-import com.github.labcabrera.hodei.customers.api.dto.CustomerModificationResult.CustomerModificationField;
+import com.github.labcabrera.hodei.customers.api.model.CustomerModificationResult.CustomerModificationField;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
 
 @Component

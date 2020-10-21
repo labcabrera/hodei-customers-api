@@ -17,9 +17,11 @@ import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerMo
 import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerRepository;
 import com.github.labcabrera.hodei.customers.api.repository.customers.ProfessionRepository;
 import com.github.labcabrera.hodei.model.commons.ContactData;
+import com.github.labcabrera.hodei.model.commons.actions.OperationResult;
 import com.github.labcabrera.hodei.model.commons.audit.EntityMetadata;
 import com.github.labcabrera.hodei.model.commons.audit.SynchronizationInfo;
 import com.github.labcabrera.hodei.model.commons.customer.CivilStatus;
+import com.github.labcabrera.hodei.model.commons.customer.CommercialNotifications;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
 import com.github.labcabrera.hodei.model.commons.customer.Gender;
 import com.github.labcabrera.hodei.model.commons.customer.IdCard;
@@ -48,7 +50,7 @@ public class DemoDataPopulator {
 	@Autowired
 	private CustomerModificationProductConfigRepository modificationProductConfigRepository;
 
-	public void loadInitialData(boolean reset) {
+	public OperationResult<Void> loadInitialData(boolean reset) {
 		if (reset) {
 			countryRepository.deleteAll();
 			professionRepository.deleteAll();
@@ -115,6 +117,7 @@ public class DemoDataPopulator {
 					.policyId(new ObjectId().toString())
 					.policyState("active")
 					.build()))
+				.commercialNotifications(Collections.singletonMap("demo-product", CommercialNotifications.EMAIL))
 				.authorization(Arrays.asList("demo"))
 				.metadata(EntityMetadata.builder()
 					.created(LocalDateTime.now())
@@ -124,6 +127,8 @@ public class DemoDataPopulator {
 					.build())
 				.build());
 		}
+
+		return OperationResult.<Void>builder().code("200").message("Success").build();
 	}
 
 }

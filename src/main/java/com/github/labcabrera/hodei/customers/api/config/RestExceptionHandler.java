@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
@@ -53,7 +54,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		else if (ex instanceof EntityNotFoundException) {
 			return new ResponseEntity<>(OperationResult.builder().code("404").message("Not found").build(), HttpStatus.NOT_FOUND);
 		}
-		else if (ex instanceof ConstraintViolationException) {
+		else if (ex instanceof ConstraintViolationException || ex instanceof ValidationException) {
 			return new ResponseEntity<>(OperationResult.builder().code("400").message(ex.getMessage()).build(), HttpStatus.BAD_REQUEST);
 		}
 		else if (HttpClientErrorException.class.equals(clazz)) {

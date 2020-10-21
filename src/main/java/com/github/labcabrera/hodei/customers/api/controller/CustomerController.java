@@ -103,7 +103,7 @@ public class CustomerController {
 	}
 
 	@PutMapping("/{id}/products")
-	@Operation(summary = "Customer modification")
+	@Operation(summary = "Updates customer product relation")
 	public CustomerModificationResult createCustomer(@PathVariable("id") String customerId,
 		@RequestBody @Valid ProductReference productReference) {
 		return null;

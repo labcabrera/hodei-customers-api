@@ -2,7 +2,7 @@ package com.github.labcabrera.hodei.customers.api.service.customer.deletion;
 
 import java.time.LocalDateTime;
 
-import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -40,7 +40,7 @@ public class CustomerDeletionService {
 				customerProductConfigRepository.findByModule(module).ifPresent(config -> {
 					String state = reference.getPolicyState();
 					if (!config.getDraftStates().contains(state)) {
-						throw new ConstraintViolationException("Customer has product references", null);
+						throw new ValidationException("Customer has product references");
 					}
 				});
 			});

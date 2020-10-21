@@ -24,6 +24,7 @@ public class CustomerCreationConverter implements Converter<CustomerCreation, Cu
 			.gender(source.getGender())
 			.contactData(source.getContactData())
 			.professionInfo(source.getProfessionInfo())
+			.commercialNotifications(source.getCommercialNotifications())
 			.build();
 	}
 

@@ -37,11 +37,41 @@ public class CustomerFieldModificationService {
 			customer.setBirth(request.getBirth());
 		}
 
+		if (checkField("birthCountryId", customer.getBirthCountryId(), request.getBirthCountryId(), list)) {
+			customer.setBirthCountryId(request.getBirthCountryId());
+		}
+
+		if (checkField("civilStatus", customer.getCivilStatus(), request.getCivilStatus(), list)) {
+			customer.setCivilStatus(request.getCivilStatus());
+		}
+
+		if (checkField("gender", customer.getGender(), request.getGender(), list)) {
+			customer.setGender(request.getGender());
+		}
+
 		if (checkFieldJson("idCard", customer.getIdCard(), request.getIdCard(), list)) {
 			customer.setIdCard(request.getIdCard());
 		}
 
-		//TODO complete fields
+		if (checkFieldJson("nationalities", customer.getNationalities(), request.getNationalities(), list)) {
+			customer.setNationalities(request.getNationalities());
+		}
+
+		if (checkFieldJson("fiscalAddress", customer.getFiscalAddress(), request.getFiscalAddress(), list)) {
+			customer.setFiscalAddress(request.getFiscalAddress());
+		}
+
+		if (checkFieldJson("contactData", customer.getContactData(), request.getContactData(), list)) {
+			customer.setContactData(request.getContactData());
+		}
+
+		if (checkFieldJson("professionInfo", customer.getProfessionInfo(), request.getProfessionInfo(), list)) {
+			customer.setProfessionInfo(request.getProfessionInfo());
+		}
+
+		if (checkFieldJson("commercialNotifications", customer.getCommercialNotifications(), request.getCommercialNotifications(), list)) {
+			customer.setCommercialNotifications(request.getCommercialNotifications());
+		}
 
 		return list;
 	}

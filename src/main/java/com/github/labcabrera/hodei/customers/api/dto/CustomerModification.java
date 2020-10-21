@@ -2,12 +2,14 @@ package com.github.labcabrera.hodei.customers.api.dto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Past;
 
 import com.github.labcabrera.hodei.model.commons.ContactData;
 import com.github.labcabrera.hodei.model.commons.customer.CivilStatus;
+import com.github.labcabrera.hodei.model.commons.customer.CommercialNotifications;
 import com.github.labcabrera.hodei.model.commons.customer.CustomerProfessionInfo;
 import com.github.labcabrera.hodei.model.commons.customer.Gender;
 import com.github.labcabrera.hodei.model.commons.customer.IdCard;
@@ -68,5 +70,8 @@ public class CustomerModification {
 	@Valid
 	@Schema(description = "Profession information")
 	private CustomerProfessionInfo professionInfo;
+
+	@Schema(description = "Commercial notifications by product")
+	private Map<String, CommercialNotifications> commercialNotifications;
 
 }

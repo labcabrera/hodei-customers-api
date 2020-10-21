@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,8 @@ import com.github.labcabrera.hodei.customers.api.dto.CustomerCreation;
 import com.github.labcabrera.hodei.customers.api.dto.CustomerModification;
 import com.github.labcabrera.hodei.customers.api.dto.CustomerModificationResult;
 import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerRepository;
-import com.github.labcabrera.hodei.customers.api.service.CustomerCreationService;
+import com.github.labcabrera.hodei.customers.api.service.customer.creation.CustomerCreationService;
+import com.github.labcabrera.hodei.customers.api.service.customer.deletion.CustomerDeletionService;
 import com.github.labcabrera.hodei.customers.api.service.customer.modification.CustomerModificationService;
 import com.github.labcabrera.hodei.model.commons.actions.OperationResult;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
@@ -53,6 +55,9 @@ public class CustomerController {
 
 	@Autowired
 	private CustomerModificationService modificationService;
+
+	@Autowired
+	private CustomerDeletionService deletionService;
 
 	@Autowired
 	private RsqlService rsqlService;
@@ -93,6 +98,12 @@ public class CustomerController {
 	public CustomerModificationResult createCustomer(@PathVariable("id") String customerId,
 		@RequestBody @Valid CustomerModification request) {
 		return modificationService.update(customerId, request);
+	}
+
+	@DeleteMapping("/{id}")
+	@Operation(summary = "Customer elimination")
+	public OperationResult<Customer> deleteCustomer(@PathVariable("id") String customerId) {
+		return deletionService.delete(customerId);
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.github.labcabrera.hodei.customers.api.service;
+package com.github.labcabrera.hodei.customers.api.service.customer.creation;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.github.labcabrera.hodei.customers.api.dto.CustomerCreation;
 import com.github.labcabrera.hodei.customers.api.repository.customers.CustomerRepository;
 import com.github.labcabrera.hodei.customers.api.security.EntityAuthorizationResolver;
+import com.github.labcabrera.hodei.customers.api.service.NotificationService;
 import com.github.labcabrera.hodei.model.commons.actions.OperationResult;
 import com.github.labcabrera.hodei.model.commons.audit.EntityMetadata;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;

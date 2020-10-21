@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.core.Ordered;
@@ -30,6 +32,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.github.labcabrera.hodei.model.commons.MessageEntry;
 import com.github.labcabrera.hodei.model.commons.actions.OperationResult;
+import com.github.labcabrera.hodei.model.commons.exception.EntityNotFoundException;
 import com.github.labcabrera.hodei.rsql.exception.PredicateParseException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -41,11 +44,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	protected ResponseEntity<Object> handleException(Exception ex) {
-		log.warn("Handling exception {} ({})", ex.getMessage(), ex.getClass().getName());
+		log.info("Handling exception {} ({})", ex.getMessage(), ex.getClass().getName());
 		Class<? extends Exception> clazz = ex.getClass();
 		if (AccessDeniedException.class.isAssignableFrom(clazz)) {
 			log.debug("Access denied: {}", ex.getMessage(), ex);
 			return new ResponseEntity<>(OperationResult.builder().code("403").message("Forbidden").build(), HttpStatus.FORBIDDEN);
+		}
+		else if (ex instanceof EntityNotFoundException) {
+			return new ResponseEntity<>(OperationResult.builder().code("404").message("Not found").build(), HttpStatus.NOT_FOUND);
+		}
+		else if (ex instanceof ConstraintViolationException) {
+			return new ResponseEntity<>(OperationResult.builder().code("400").message(ex.getMessage()).build(), HttpStatus.BAD_REQUEST);
 		}
 		else if (HttpClientErrorException.class.equals(clazz)) {
 			log.debug("HTTP client error: {}", ex.getMessage(), ex);

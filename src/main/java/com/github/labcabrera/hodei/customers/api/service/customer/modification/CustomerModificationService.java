@@ -20,6 +20,7 @@ import com.github.labcabrera.hodei.customers.api.security.AuthorizationFilter;
 import com.github.labcabrera.hodei.customers.api.security.EntityAuthorizationResolver;
 import com.github.labcabrera.hodei.customers.api.service.NotificationService;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
+import com.github.labcabrera.hodei.model.commons.exception.EntityNotFoundException;
 
 @Service
 public class CustomerModificationService {
@@ -46,7 +47,7 @@ public class CustomerModificationService {
 	private EntityAuthorizationResolver entityAuthorizationResolver;
 
 	public CustomerModificationResult update(String customerId, @Valid CustomerModification request) {
-		Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new RuntimeException("Entity not found"));
+		Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
 		if (!authorizationFilter.test(customer)) {
 			throw new AccessDeniedException("Forbiden");
 		}

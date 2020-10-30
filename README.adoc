@@ -1,1 +1,42 @@
 = Hodei Customers API
+
+Ejemplo de consulta:
+
+http://localhost:8080/graphiql
+
+----
+{
+  customer(id : "5f9c52534260db47fe0e4fe9") {
+    id
+    idCard {
+      type
+      number
+    }
+    name
+    surname1
+    surname2
+    birth
+    birthCountry {
+      id
+      name
+    }
+    fiscalAddress {
+      country {
+        id
+        name
+      }
+      province {
+        id
+        name
+      }
+      locality
+      zipCode
+      road
+    }
+  }
+}
+----
+
+== Resources
+
+- https://www.graphql-java.com/tutorials/getting-started-with-spring-boot/

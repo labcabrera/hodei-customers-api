@@ -37,9 +37,9 @@ public class CustomerFieldModificationService {
 			customer.setBirth(request.getBirth());
 		}
 
-		if (checkField("birthCountryId", customer.getBirthCountryId(), request.getBirthCountryId(), list)) {
-			customer.setBirthCountryId(request.getBirthCountryId());
-		}
+//		if (checkField("birthCountryId", customer.getBirthCountryId(), request.getBirthCountryId(), list)) {
+//			customer.setBirthCountryId(request.getBirthCountryId());
+//		}
 
 		if (checkField("civilStatus", customer.getCivilStatus(), request.getCivilStatus(), list)) {
 			customer.setCivilStatus(request.getCivilStatus());

@@ -50,13 +50,14 @@ dependencies {
 	
 	implementation 'org.springdoc:springdoc-openapi-ui:1.4.8'
 	implementation 'org.springdoc:springdoc-openapi-data-rest:1.4.8'
-	
-	// Note starter-jwt provides "runtime" jsonwebtoken, but for testing purpose we included a dummy JWT
-	// tokens in OpenApi config and we require "compile" dependency
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+	implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.0.5'
+	implementation 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.0.5'
+	implementation 'com.graphql-java-kickstart:graphql-java-tools:5.3.4'
+
 	
 	implementation 'com.github.labcabrera:hodei-model-commons:1.0.0-SNAPSHOT'
-	implementation 'com.github.labcabrera:hodei-starter-security-jwt:1.0.0-SNAPSHOT'
+	implementation 'com.github.labcabrera:hodei-starter-security-jwt:1.0.1-SNAPSHOT'
 	implementation 'com.github.labcabrera:hodei-starter-rsql:1.0.0-SNAPSHOT'
 
 	compileOnly 'org.projectlombok:lombok'

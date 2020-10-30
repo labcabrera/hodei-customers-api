@@ -1,19 +1,12 @@
 package com.github.labcabrera.hodei.customers.api.config;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.github.labcabrera.hodei.security.jwt.JwtConstants;
-
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -63,16 +56,17 @@ public class OpenApiConfig {
 	}
 
 	private String createDemoToken(String username, List<String> roles) {
-		String issuer = "hodei-customers";
-		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime expirationDate = now.plusYears(1);
-		ZoneId zoneId = ZoneId.systemDefault();
-		return "Bearer " + Jwts.builder()
-			.setIssuedAt(Date.from(now.atZone(zoneId).toInstant()))
-			.setExpiration(Date.from(expirationDate.atZone(zoneId).toInstant())).setIssuer(issuer)
-			.setSubject(username).claim(JwtConstants.KEY_CLAIM_ROLES, roles)
-			.signWith(SignatureAlgorithm.HS512, jwtSecret)
-			.compact();
+		return "disabled in this version";
+		//		String issuer = "hodei-customers";
+		//		LocalDateTime now = LocalDateTime.now();
+		//		LocalDateTime expirationDate = now.plusYears(1);
+		//		ZoneId zoneId = ZoneId.systemDefault();
+		//		return "Bearer " + Jwts.builder()
+		//			.setIssuedAt(Date.from(now.atZone(zoneId).toInstant()))
+		//			.setExpiration(Date.from(expirationDate.atZone(zoneId).toInstant())).setIssuer(issuer)
+		//			.setSubject(username).claim(JwtConstants.KEY_CLAIM_ROLES, roles)
+		//			.signWith(SignatureAlgorithm.HS512, jwtSecret)
+		//			.compact();
 	}
 
 }

@@ -1,0 +1,42 @@
+schema {
+	query: Query
+}
+
+type Query {
+	customer(id: ID) : Customer
+}
+
+type Customer {
+	id: ID
+	idCard: IdCard
+	name: String
+	surname1: String
+	surname2: String
+	birth: String
+	birthCountry: Country
+	fiscalAddress: Address
+}
+
+type IdCard {
+	number: String
+	type: String
+}
+
+type Address {
+	country: Country
+	province: Province
+	locality: String
+	zipCode: String
+	roadType: String
+	road: String
+}
+
+type Country {
+	id: ID
+	name: String
+}
+
+type Province {
+	id: ID
+	name: String
+}

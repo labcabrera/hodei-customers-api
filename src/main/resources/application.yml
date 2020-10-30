@@ -25,6 +25,17 @@ management:
     health:
       show-details: always
 
+graphql:
+  servlet:
+    mapping: /graphql
+    enabled: true
+    corsEnabled: true
+    cors:
+      allowed-origins: http://some.domain.com
+     # if you want to @ExceptionHandler annotation for custom GraphQLErrors
+    exception-handlers-enabled: true
+    contextSetting: PER_REQUEST_WITH_INSTRUMENTATION
+
 app:
   demo: true
   mongodb:
@@ -55,4 +66,10 @@ app:
         /swagger-resources/**,
         /webjars/**,
         /actuator,
-        /actuator/**
+        /actuator/**,
+        /graphql,
+        /graphql/**,
+        /graphiql,
+        /graphiql/**,
+        /vendor/**,
+        /subscriptions

@@ -86,6 +86,20 @@ Que produce la siguiente respuesta:
 }
 ----
 
+----
+{
+  customerByIdCard(idCard: "11111111H") {
+    id
+    idCard {
+      type
+    }
+    name
+    surname1
+    surname2
+  }
+}
+----
+
 == Resources
 
 - https://www.graphql-java.com/tutorials/getting-started-with-spring-boot/

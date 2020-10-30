@@ -17,4 +17,8 @@ public class CustomerQueryResolver implements GraphQLQueryResolver {
 		return customerRepository.findById(id).orElse(null);
 	}
 
+	public Customer customerByIdCard(String idCardNumber) {
+		return customerRepository.findByIdCardNumber(idCardNumber).orElse(null);
+	}
+
 }

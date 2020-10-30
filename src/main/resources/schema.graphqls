@@ -4,6 +4,9 @@ schema {
 
 type Query {
 	customer(id: ID): Customer
+	
+	customers(page: Int, size: Int): [Customer]
+	
 	customerByIdCard(idCard: String): Customer
 
 	country(id: ID): Country

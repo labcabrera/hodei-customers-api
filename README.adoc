@@ -100,6 +100,18 @@ Que produce la siguiente respuesta:
 }
 ----
 
+----
+{
+  customers(page: 0, size: 2) {
+    id
+    idCard {
+      number
+      type
+    }
+  }
+}
+----
+
 == Resources
 
 - https://www.graphql-java.com/tutorials/getting-started-with-spring-boot/

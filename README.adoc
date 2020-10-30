@@ -1,12 +1,12 @@
 = Hodei Customers API
 
-Ejemplo de consulta:
-
 http://localhost:8080/graphiql
+
+Ejemplo de consulta:
 
 ----
 {
-  customer(id : "5f9c52534260db47fe0e4fe9") {
+  customer(id : "5f9c5500e930620621202e89") {
     id
     idCard {
       type
@@ -32,6 +32,55 @@ http://localhost:8080/graphiql
       locality
       zipCode
       road
+    }
+    professionInfo {
+      profession {
+        id
+        name
+      }
+    }
+  }
+}
+----
+
+Que produce la siguiente respuesta:
+
+----
+{
+  "data": {
+    "customer": {
+      "id": "5f9c5500e930620621202e89",
+      "idCard": {
+        "type": "NIF",
+        "number": "11111111H"
+      },
+      "name": "John",
+      "surname1": "Doe",
+      "surname2": "Smith",
+      "birth": "1980-08-30",
+      "birthCountry": {
+        "id": "ESP",
+        "name": "Spain"
+      },
+      "fiscalAddress": {
+        "country": {
+          "id": "ESP",
+          "name": "Spain"
+        },
+        "province": {
+          "id": "ESP-28",
+          "name": "Madrid"
+        },
+        "locality": "Madrid",
+        "zipCode": "28013",
+        "road": "Serrano 2, 3ºA"
+      },
+      "professionInfo": {
+        "profession": {
+          "id": "artist",
+          "name": "Artist"
+        }
+      }
     }
   }
 }

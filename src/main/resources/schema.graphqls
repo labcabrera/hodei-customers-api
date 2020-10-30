@@ -15,6 +15,7 @@ type Customer {
 	birth: String
 	birthCountry: Country
 	fiscalAddress: Address
+	professionInfo: ProfessionInfo
 }
 
 type IdCard {
@@ -39,4 +40,13 @@ type Country {
 type Province {
 	id: ID
 	name: String
+}
+
+type Profession {
+	id: ID
+	name: String
+}
+
+type ProfessionInfo {
+	profession: Profession
 }

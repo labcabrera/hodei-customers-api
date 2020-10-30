@@ -23,6 +23,7 @@ import com.github.labcabrera.hodei.model.commons.audit.SynchronizationInfo;
 import com.github.labcabrera.hodei.model.commons.customer.CivilStatus;
 import com.github.labcabrera.hodei.model.commons.customer.CommercialNotifications;
 import com.github.labcabrera.hodei.model.commons.customer.Customer;
+import com.github.labcabrera.hodei.model.commons.customer.CustomerProfessionInfo;
 import com.github.labcabrera.hodei.model.commons.customer.Gender;
 import com.github.labcabrera.hodei.model.commons.customer.IdCard;
 import com.github.labcabrera.hodei.model.commons.customer.IdCardType;
@@ -73,8 +74,8 @@ public class DemoDataPopulator {
 			provinceRepository.insert(Province.builder().id("ESP-28").name("Madrid").countryId("ESP").build());
 		}
 		if (professionRepository.count() == 0) {
-			professionRepository.insert(Profession.builder().name("Artist").build());
-			professionRepository.insert(Profession.builder().name("Coder").build());
+			professionRepository.insert(Profession.builder().id("artits").name("Artist").build());
+			professionRepository.insert(Profession.builder().id("coder").name("Coder").build());
 		}
 		if (modificationProductConfigRepository.count() == 0) {
 			modificationProductConfigRepository.insert(CustomerProductConfig.builder()
@@ -113,6 +114,11 @@ public class DemoDataPopulator {
 					.build())
 				.contactData(ContactData.builder()
 					.email("lab.cabrera@gmail.com")
+					.build())
+				.professionInfo(CustomerProfessionInfo.builder()
+					.profession(Profession.builder()
+						.id("artist")
+						.build())
 					.build())
 				.productReferences(Arrays.asList(ProductReference.builder()
 					.module("demo-product")

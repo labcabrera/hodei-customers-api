@@ -2,14 +2,11 @@ schema {
 	query: Query
 }
 
-type QueryCustomer {
+type Query {
 	customer(id: ID): Customer
 	customerByIdCard(idCard: String): Customer
 
 	country(id: ID): Country
-}
-
-type QueryCountry {
 }
 
 type Customer {

@@ -7,6 +7,8 @@ type Query {
 	customerByIdCard(idCard: String): Customer
 
 	country(id: ID): Country
+	province(id: ID): Province
+	profession(id: ID): Profession
 }
 
 type Customer {

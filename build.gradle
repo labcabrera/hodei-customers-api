@@ -19,6 +19,20 @@ configurations {
 repositories {
 	mavenLocal()
 	mavenCentral()
+	maven {
+		url = uri("https://maven.pkg.github.com/labcabrera/hodei-starter-rsql")
+		credentials {
+			username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+			password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+		}
+	}
+	maven {
+		url = uri("https://maven.pkg.github.com/labcabrera/hodei-starter-security-jwt")
+		credentials {
+			username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+			password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+		}
+	}
 }
 
 ext {
@@ -37,8 +51,12 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-ui:1.4.8'
 	implementation 'org.springdoc:springdoc-openapi-data-rest:1.4.8'
 	
+	// Note starter-jwt provides "runtime" jsonwebtoken, but for testing purpose we included a dummy JWT
+	// tokens in OpenApi config and we require "compile" dependency
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	
 	implementation 'com.github.labcabrera:hodei-model-commons:1.0.0-SNAPSHOT'
-	implementation 'com.github.labcabrera:hodei-starter-jwt:1.0.0-SNAPSHOT'
+	implementation 'com.github.labcabrera:hodei-starter-security-jwt:1.0.0-SNAPSHOT'
 	implementation 'com.github.labcabrera:hodei-starter-rsql:1.0.0-SNAPSHOT'
 
 	compileOnly 'org.projectlombok:lombok'
